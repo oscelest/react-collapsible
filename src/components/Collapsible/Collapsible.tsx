@@ -12,8 +12,8 @@ function Collapsible(props: InputFieldProps) {
   if (props.className) classes.push(props.className);
 
   return (
-    <div className={classes.join(" ")} onClick={onClick} data-collapsed={collapsed}>
-      <div className={"react-collapsible-label"}>{props.label}</div>
+    <div className={classes.join(" ")} data-collapsed={collapsed}>
+      <div className={"react-collapsible-label"} onClick={onClick}>{props.label}</div>
       <div ref={ref_content} className={"react-collapsible-content"} style={style_content}>
         {props.children}
       </div>
