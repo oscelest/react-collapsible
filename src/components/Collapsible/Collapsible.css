@@ -11,15 +11,13 @@
   flex:          1 1 auto;
   user-select:   none;
   cursor:        pointer;
+  border-bottom: 1px solid black;
 }
 
 .react-collapsible-content {
   display:       flex;
   flex:          0 0 auto;
   flex-flow:     column;
-  border-bottom: 1px solid black;
-  border-left:   1px solid black;
-  border-right:  1px solid black;
   transition:    max-height 0.2s ease-out;
   margin-top:    -1px;
 }
