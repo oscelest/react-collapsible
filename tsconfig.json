@@ -1,31 +1,25 @@
 {
   "compilerOptions": {
-    "allowJs":                          true,
+    "target":                           "es5",
     "esModuleInterop":                  true,
     "forceConsistentCasingInFileNames": true,
-    "incremental":                      true,
-    "isolatedModules":                  true,
-    "jsx":                              "preserve",
-    "lib":                              [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "module":                           "esnext",
-    "moduleResolution":                 "Node",
-    "noEmit":                           true,
-    "resolveJsonModule":                true,
+    "strict":                           true,
     "skipLibCheck":                     true,
-    "strict":                           false,
-    "target":                           "es5"
+    "jsx":                              "react",
+    "module":                           "ESNext",
+    "declaration":                      true,
+    "declarationDir":                   "types",
+    "sourceMap":                        true,
+    "outDir":                           "dist",
+    "moduleResolution":                 "node",
+    "allowSyntheticDefaultImports":     true,
+    "emitDeclarationOnly":              true
   },
   "include":         [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
+    "src/*.ts",
+    "src/*.tsx"
   ],
   "exclude":         [
-    "node_modules",
     "**/node_modules/*"
   ]
 }
