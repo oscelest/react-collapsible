@@ -22,6 +22,12 @@ export default [
         format:    "esm",
         sourcemap: true,
       },
+      {
+        file:      pkg.umd,
+        format:    "umd",
+        name:      "Collapsible",
+        sourcemap: true,
+      },
     ],
     plugins: [
       peerDepsExternal(),
