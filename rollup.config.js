@@ -25,21 +25,24 @@ export default [
       {
         file:      pkg.umd,
         format:    "umd",
-        name:      "Collapsible",
+        name:      pkg.name.replace(/^@noxy\//, "").split("-").map(v => v.charAt(0).toUpperCase() + v.slice(1)).join(""),
         sourcemap: true,
+        globals:   {
+          "react": "React",
+        },
       },
     ],
     plugins: [
       peerDepsExternal(),
       resolve(),
       commonjs(),
-      typescript({tsconfig: "./tsconfig.json"}),
+      typescript({tsconfig: "./tsconfig.build.json"}),
       postcss(),
       terser(),
     ],
   },
   {
-    input:    "dist/esm/types/index.d.ts",
+    input:    "dist/esm/index.d.ts",
     output:   [{file: "dist/types/index.d.ts", format: "esm"}],
     plugins:  [dts()],
     external: [/\.css$/],
