@@ -1,0 +1,47 @@
+:root .Component {
+  --collapsible-speed:      200ms;
+  --collapsible-max-width:  0px;
+  --collapsible-max-height: 0px;
+}
+
+.Component:global(.collapsible) {
+  display:   flex;
+  flex:      0 0 auto;
+  flex-flow: column;
+  border:    1px solid black;
+  overflow:  hidden;
+}
+
+.Component:global(.collapsible .collapsible-label) {
+  display:       flex;
+  flex:          1 1 auto;
+  border-bottom: 1px solid black;
+  cursor:        pointer;
+  user-select:   none;
+}
+
+.Component:global(.collapsible .collapsible-content) {
+  display:     flex;
+  flex:        0 0 auto;
+  flex-flow:   column;
+  margin-top:  -1px;
+  word-break:  keep-all;
+  white-space: nowrap;
+  max-width:   var(--collapsible-max-width);
+  max-height:  var(--collapsible-max-height);
+  transition:  max-height var(--collapsible-speed) ease-out 0ms,
+               max-width var(--collapsible-speed) ease-out 0ms;
+}
+
+.Component:global(.collapsible[data-direction="wboth"][data-collapsed="false"] .collapsible-content),
+.Component:global(.collapsible[data-direction="hboth"][data-collapsed="true"] .collapsible-content) {
+  transition: max-height var(--collapsible-speed) ease-out var(--collapsible-speed),
+              max-width var(--collapsible-speed) ease-out 0ms;
+}
+
+
+.Component:global(.collapsible[data-direction="wboth"][data-collapsed="true"] .collapsible-content),
+.Component:global(.collapsible[data-direction="hboth"][data-collapsed="false"] .collapsible-content) {
+  transition: max-height var(--collapsible-speed) ease-out 0ms,
+              max-width var(--collapsible-speed) ease-out var(--collapsible-speed);
+}
