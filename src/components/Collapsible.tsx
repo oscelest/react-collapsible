@@ -67,7 +67,7 @@ export interface CollapsibleProps extends Omit<HTMLAttributes<HTMLDivElement>, "
   style?: CollapsibleStyleProps;
   speed?: number;
 
-  onChange(value: boolean): void;
+  onChange?(value: boolean): void;
 }
 
 export default Collapsible;
