@@ -1,6 +1,6 @@
 import React from "react";
 import Collapsible from "../src/components/Collapsible";
-import CollapsibleDirection from "../src/enums/CollapsibleDimension";
+import CollapsibleDirection from "../src/enums/CollapsibleDirection";
 
 export default function IndexPage() {
 

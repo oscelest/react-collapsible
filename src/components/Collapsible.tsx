@@ -1,6 +1,6 @@
 import React, {useRef, useState, useEffect, HTMLAttributes, CSSProperties} from "react";
 import Style from "./Collapsible.module.css";
-import CollapsibleDirection from "../enums/CollapsibleDimension";
+import CollapsibleDirection from "../enums/CollapsibleDirection";
 
 function Collapsible(props: CollapsibleProps) {
   const {style = {}, label = "\u00A0", collapsed, direction = CollapsibleDirection.HEIGHT, speed = 200, ...component_method_props} = props;
