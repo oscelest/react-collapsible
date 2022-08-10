@@ -15,15 +15,18 @@ function Collapsible(props: CollapsibleProps) {
   style["--collapsible-max-width"] = `${collapsed && direction !== CollapsibleDirection.HEIGHT ? 0 : max_width}px`;
   style["--collapsible-max-height"] = `${collapsed && direction !== CollapsibleDirection.WIDTH ? 0 : max_height}px`;
 
-  useEffect(() => {
-    const element = ref_element.current?.querySelector(".collapsible-content");
-    if (!element) throw new Error("Ellipsis text 'ref_element' is not being rendered.");
-    updateElementSize(element);
+  useEffect(
+    () => {
+      const element = ref_element.current?.querySelector(".collapsible-content");
+      if (!element) throw new Error("Ellipsis text 'ref_element' is not being rendered.");
+      updateElementSize(element);
 
-    const observer = new ResizeObserver(() => updateElementSize(element));
-    observer.observe(element, {box: "content-box"});
-    return () => observer.disconnect();
-  }, [ref_element.current]);
+      const observer = new ResizeObserver(() => updateElementSize(element));
+      observer.observe(element, {box: "content-box"});
+      return () => observer.disconnect();
+    },
+    [ref_element.current]
+  );
 
   const classes = [Style.Component, "collapsible"];
   if (props.className) classes.push(props.className);
@@ -55,11 +58,10 @@ interface CollapsibleStyleProps extends CSSProperties {
 }
 
 export interface CollapsibleProps extends Omit<HTMLAttributes<HTMLDivElement>, "style"> {
-  speed?: number;
   direction: CollapsibleDirection;
-
   label?: React.ReactNode;
   style?: CollapsibleStyleProps;
+  speed?: number;
 }
 
 export default Collapsible;

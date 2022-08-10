@@ -24,11 +24,11 @@
   display:     flex;
   flex:        0 0 auto;
   flex-flow:   column;
-  margin-top:  -1px;
-  word-break:  keep-all;
-  white-space: nowrap;
   max-width:   var(--collapsible-max-width);
   max-height:  var(--collapsible-max-height);
+  margin-top:  -1px;
+  white-space: nowrap;
+  word-break:  keep-all;
   transition:  max-height var(--collapsible-speed) ease-out 0ms,
                max-width var(--collapsible-speed) ease-out 0ms;
 }
