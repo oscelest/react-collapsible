@@ -1,10 +1,10 @@
 :root .Component {
-  --collapsible-speed:      200ms;
-  --collapsible-max-width:  0px;
-  --collapsible-max-height: 0px;
+  --react-collapsible-internal-speed:      200ms;
+  --react-collapsible-internal-max-width:  0px;
+  --react-collapsible-internal-max-height: 0px;
 }
 
-.Component:global(.collapsible) {
+.Component {
   display:   flex;
   flex:      0 0 auto;
   flex-flow: column;
@@ -12,7 +12,7 @@
   overflow:  hidden;
 }
 
-.Component:global(.collapsible .collapsible-label) {
+.Component:global(.collapsible-label) {
   display:       flex;
   flex:          1 1 auto;
   border-bottom: 1px solid black;
@@ -20,28 +20,28 @@
   user-select:   none;
 }
 
-.Component:global(.collapsible .collapsible-content) {
+.Component:global(.collapsible-content) {
   display:     flex;
   flex:        0 0 auto;
   flex-flow:   column;
-  max-width:   var(--collapsible-max-width);
-  max-height:  var(--collapsible-max-height);
+  max-width:   var(--react-collapsible-internal-max-width);
+  max-height:  var(--react-collapsible-internal-max-height);
   margin-top:  -1px;
   white-space: nowrap;
   word-break:  keep-all;
-  transition:  max-height var(--collapsible-speed) ease-out 0ms,
-               max-width var(--collapsible-speed) ease-out 0ms;
+  transition:  max-height var(--react-collapsible-internal-speed) ease-out 0ms,
+               max-width var(--react-collapsible-internal-speed) ease-out 0ms;
 }
 
 .Component:global(.collapsible[data-direction="wboth"][data-collapsed="false"] .collapsible-content),
 .Component:global(.collapsible[data-direction="hboth"][data-collapsed="true"] .collapsible-content) {
-  transition: max-height var(--collapsible-speed) ease-out var(--collapsible-speed),
-              max-width var(--collapsible-speed) ease-out 0ms;
+  transition: max-height var(--react-collapsible-internal-speed) ease-out var(--react-collapsible-internal-speed),
+              max-width var(--react-collapsible-internal-speed) ease-out 0ms;
 }
 
 
 .Component:global(.collapsible[data-direction="wboth"][data-collapsed="true"] .collapsible-content),
 .Component:global(.collapsible[data-direction="hboth"][data-collapsed="false"] .collapsible-content) {
-  transition: max-height var(--collapsible-speed) ease-out 0ms,
-              max-width var(--collapsible-speed) ease-out var(--collapsible-speed);
+  transition: max-height var(--react-collapsible-internal-speed) ease-out 0ms,
+              max-width var(--react-collapsible-internal-speed) ease-out var(--react-collapsible-internal-speed);
 }
