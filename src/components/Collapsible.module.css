@@ -12,7 +12,7 @@
   overflow:  hidden;
 }
 
-.Component:global(.collapsible-label) {
+.Component:global(> .collapsible-label) {
   display:       flex;
   flex:          1 1 auto;
   border-bottom: 1px solid black;
@@ -20,7 +20,7 @@
   user-select:   none;
 }
 
-.Component:global(.collapsible-content) {
+.Component:global(> .collapsible-content) {
   display:     flex;
   flex:        0 0 auto;
   flex-flow:   column;

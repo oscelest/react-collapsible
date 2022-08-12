@@ -11,9 +11,9 @@ function Collapsible(props: CollapsibleProps) {
   const [max_height, setMaxHeight] = useState<number>(0);
   const ref_element = useRef<HTMLInputElement>(null);
 
-  style["--collapsible-speed"] = `${speed}ms`;
-  style["--collapsible-max-width"] = `${internal_collapsed && direction !== CollapsibleDirection.HEIGHT ? 0 : max_width}px`;
-  style["--collapsible-max-height"] = `${internal_collapsed && direction !== CollapsibleDirection.WIDTH ? 0 : max_height}px`;
+  style["--react-collapsible-internal-speed"] = `${speed}ms`;
+  style["--react-collapsible-internal-max-width"] = `${internal_collapsed && direction !== CollapsibleDirection.HEIGHT ? 0 : max_width}px`;
+  style["--react-collapsible-internal-max-height"] = `${internal_collapsed && direction !== CollapsibleDirection.WIDTH ? 0 : max_height}px`;
 
   useEffect(() => { collapsed !== undefined && setInternalCollapsed(collapsed);}, [collapsed]);
   useEffect(
@@ -55,9 +55,9 @@ function Collapsible(props: CollapsibleProps) {
 }
 
 interface CollapsibleStyleProps extends CSSProperties {
-  "--collapsible-speed"?: `${number}ms`;
-  "--collapsible-max-width"?: `${number}px`;
-  "--collapsible-max-height"?: `${number}px`;
+  "--react-collapsible-internal-speed"?: `${number}ms`;
+  "--react-collapsible-internal-max-width"?: `${number}px`;
+  "--react-collapsible-internal-max-height"?: `${number}px`;
 }
 
 export interface CollapsibleProps extends Omit<HTMLAttributes<HTMLDivElement>, "style" | "onChange"> {
