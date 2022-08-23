@@ -1,7 +1,7 @@
 {
   "name": "@noxy/react-collapsible",
   "author": "oscelest",
-  "version": "0.4.4",
+  "version": "0.5.0",
   "description": "A simple collapsible react element.",
   "license": "MIT",
   "repository": {
