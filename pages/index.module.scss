@@ -1,0 +1,19 @@
+.Page {
+  display: flex;
+
+  .Sidebar {
+
+  }
+
+  .Content {
+    display:      flex;
+    flex-flow:    column;
+    grid-row-gap: 20px;
+    padding:      20px;
+
+    .Collapsible {
+      justify-self: flex-start;
+      align-self:   flex-start;
+    }
+  }
+}

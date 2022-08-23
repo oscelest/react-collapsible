@@ -3,7 +3,7 @@ import Style from "./Collapsible.module.css";
 import CollapsibleDirection from "../enums/CollapsibleDirection";
 
 function Collapsible(props: CollapsibleProps) {
-  const {style = {}, label = "\u00A0", collapsed, direction = CollapsibleDirection.HEIGHT, speed = 200, ...component_method_props} = props;
+  const {label, collapsed, direction = CollapsibleDirection.HEIGHT, speed = 200, minWidth = 0, minHeight = 0, ...component_method_props} = props;
   const {onClick, onChange, ...component_props} = component_method_props;
 
   const [internal_collapsed, setInternalCollapsed] = useState<boolean>(true);
@@ -11,11 +11,10 @@ function Collapsible(props: CollapsibleProps) {
   const [max_height, setMaxHeight] = useState<number>(0);
   const ref_element = useRef<HTMLInputElement>(null);
 
-  style["--react-collapsible-internal-speed"] = `${speed}ms`;
-  style["--react-collapsible-internal-max-width"] = `${internal_collapsed && direction !== CollapsibleDirection.HEIGHT ? 0 : max_width}px`;
-  style["--react-collapsible-internal-max-height"] = `${internal_collapsed && direction !== CollapsibleDirection.WIDTH ? 0 : max_height}px`;
-
-  useEffect(() => { collapsed !== undefined && setInternalCollapsed(collapsed);}, [collapsed]);
+  useEffect(
+    () => { if (collapsed !== undefined) setInternalCollapsed(collapsed); },
+    [collapsed]
+  );
   useEffect(
     () => {
       const element = ref_element.current?.querySelector(".collapsible-content");
@@ -32,10 +31,24 @@ function Collapsible(props: CollapsibleProps) {
   const classes = [Style.Component, "collapsible"];
   if (props.className) classes.push(props.className);
 
+  const content_style: CSSProperties = {
+    maxWidth: `${internal_collapsed && direction !== CollapsibleDirection.HEIGHT ? minWidth : max_width}px`,
+    maxHeight: `${internal_collapsed && direction !== CollapsibleDirection.WIDTH ? minHeight : max_height}px`
+  };
+  if (direction === CollapsibleDirection.BOTH_WIDTH_FIRST && !internal_collapsed || direction === CollapsibleDirection.BOTH_HEIGHT_FIRST && internal_collapsed) {
+    content_style.transition = `max-width ${speed}ms ease-out 0ms, max-height ${speed}ms ease-out ${speed}ms`;
+  }
+  else if (direction === CollapsibleDirection.BOTH_WIDTH_FIRST && internal_collapsed || direction === CollapsibleDirection.BOTH_HEIGHT_FIRST && !internal_collapsed) {
+    content_style.transition = `max-width ${speed}ms ease-out ${speed}ms, max-height ${speed}ms ease-out 0ms`;
+  }
+  else {
+    content_style.transition = `max-width ${speed}ms ease-out 0ms, max-height ${speed}ms ease-out 0ms`;
+  }
+
   return (
-    <div {...component_props} ref={ref_element} className={classes.join(" ")} style={style} data-collapsed={internal_collapsed} data-direction={direction}>
-      <div className={"collapsible-label"} onClick={onComponentClick}>{label}</div>
-      <div className={"collapsible-content"}>
+    <div {...component_props} ref={ref_element} className={classes.join(" ")} data-collapsed={internal_collapsed} data-direction={direction}>
+      {!!label && <div className={"collapsible-label"} onClick={onComponentClick}>{label}</div>}
+      <div className={"collapsible-content"} style={content_style}>
         {props.children}
       </div>
     </div>
@@ -44,7 +57,7 @@ function Collapsible(props: CollapsibleProps) {
   function onComponentClick(event: React.MouseEvent<HTMLDivElement>) {
     onClick?.(event);
     if (event.defaultPrevented) return;
-    onChange?.(!internal_collapsed)
+    onChange?.(!internal_collapsed);
     setInternalCollapsed(!internal_collapsed);
   }
 
@@ -66,6 +79,8 @@ export interface CollapsibleProps extends Omit<HTMLAttributes<HTMLDivElement>, "
   label?: React.ReactNode;
   style?: CollapsibleStyleProps;
   speed?: number;
+  minWidth?: number;
+  minHeight?: number;
 
   onChange?(value: boolean): void;
 }
