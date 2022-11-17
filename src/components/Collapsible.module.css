@@ -1,4 +1,8 @@
-.Component {
+:root .Component {
+  --icon: " ";
+}
+
+.Component:global(.collapsible) {
   display:   flex;
   flex:      0 0 auto;
   flex-flow: column;

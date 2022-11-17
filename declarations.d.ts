@@ -1,2 +1,4 @@
-declare module "*.css"
-declare module "*.scss"
+declare module "*.module.css" {
+  const content: {[className: string]: string};
+  export = content;
+}
