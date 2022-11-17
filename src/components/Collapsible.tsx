@@ -1,87 +1,136 @@
-import React, {useRef, useState, useEffect, HTMLAttributes, CSSProperties} from "react";
-import Style from "./Collapsible.module.css";
+import React, {CSSProperties, HTMLAttributes, ReactNode, useEffect, useRef, useState} from "react";
 import CollapsibleDirection from "../enums/CollapsibleDirection";
+import Style from "./Collapsible.module.css"
 
 function Collapsible(props: CollapsibleProps) {
-  const {label, collapsed, direction = CollapsibleDirection.HEIGHT, speed = 200, minWidth = 0, minHeight = 0, ...component_method_props} = props;
+  const {label, id, collapsed = true, direction = CollapsibleDirection.HEIGHT, speed = 200, minWidth = 0, minHeight = 0, ...component_method_props} = props;
   const {onClick, onChange, ...component_props} = component_method_props;
-
-  const [internal_collapsed, setInternalCollapsed] = useState<boolean>(true);
-  const [max_width, setMaxWidth] = useState<number>(0);
-  const [max_height, setMaxHeight] = useState<number>(0);
-  const ref_element = useRef<HTMLInputElement>(null);
-
-  useEffect(
-    () => { if (collapsed !== undefined) setInternalCollapsed(collapsed); },
-    [collapsed]
-  );
-  useEffect(
-    () => {
-      const element = ref_element.current?.querySelector(".collapsible-content");
-      if (!element) throw new Error("Ellipsis text 'ref_element' is not being rendered.");
-      updateElementSize(element);
-
-      const observer = new ResizeObserver(() => updateElementSize(element));
-      observer.observe(element, {box: "content-box"});
-      return () => observer.disconnect();
-    },
-    [ref_element.current]
-  );
-
+  
+  const [content_width, setContentWidth] = useState<number>(-1);
+  const [content_height, setContentHeight] = useState<number>(-1);
+  
+  const [last_frame, setLastFrame] = useState<DOMHighResTimeStamp>(0);
+  
+  const ref_label = useRef<HTMLDivElement>(null);
+  const ref_container = useRef<HTMLDivElement>(null);
+  const dynamic = useRef<DynamicVariables>({collapsed, max_height: 0, max_width: 0});
+  
+  useEffect(onCollapsedChange, [collapsed]);
+  useEffect(onRefContainerChange, [ref_container.current]);
+  useEffect(onFrameChange, [last_frame]);
+  
   const classes = [Style.Component, "collapsible"];
   if (props.className) classes.push(props.className);
-
+  
   const content_style: CSSProperties = {
-    maxWidth: `${internal_collapsed && direction !== CollapsibleDirection.HEIGHT ? minWidth : max_width}px`,
-    maxHeight: `${internal_collapsed && direction !== CollapsibleDirection.WIDTH ? minHeight : max_height}px`
+    minWidth, minHeight,
+    maxWidth: direction !== CollapsibleDirection.HEIGHT ? `${dynamic.current.max_width}px` : undefined,
+    maxHeight: direction !== CollapsibleDirection.WIDTH ? `${dynamic.current.max_height}px` : undefined
   };
-  if (direction === CollapsibleDirection.BOTH_WIDTH_FIRST && !internal_collapsed || direction === CollapsibleDirection.BOTH_HEIGHT_FIRST && internal_collapsed) {
-    content_style.transition = `max-width ${speed}ms ease-out 0ms, max-height ${speed}ms ease-out ${speed}ms`;
-  }
-  else if (direction === CollapsibleDirection.BOTH_WIDTH_FIRST && internal_collapsed || direction === CollapsibleDirection.BOTH_HEIGHT_FIRST && !internal_collapsed) {
-    content_style.transition = `max-width ${speed}ms ease-out ${speed}ms, max-height ${speed}ms ease-out 0ms`;
-  }
-  else {
-    content_style.transition = `max-width ${speed}ms ease-out 0ms, max-height ${speed}ms ease-out 0ms`;
-  }
-
+  
   return (
-    <div {...component_props} ref={ref_element} className={classes.join(" ")} data-collapsed={internal_collapsed} data-direction={direction}>
-      {!!label && <div className={"collapsible-label"} onClick={onComponentClick}>{label}</div>}
+    <div {...component_props} className={classes.join(" ")} data-collapsed={dynamic.current.collapsed} data-direction={direction}>
+      {renderLabel(label)}
       <div className={"collapsible-content"} style={content_style}>
-        {props.children}
+        <div ref={ref_container} id={id} className={"collapsible-content-container"}>
+          {props.children}
+        </div>
       </div>
     </div>
   );
-
+  
+  function renderLabel(label?: ReactNode) {
+    if (!label) return null;
+    
+    return (
+      <div ref={ref_label} className={"collapsible-label"} onClick={onComponentClick}>{label}</div>
+    );
+  }
+  
+  function onFrameChange() {
+    if (!last_frame) return;
+    requestAnimationFrame(animate);
+  }
+  
+  function animate(timestamp: DOMHighResTimeStamp) {
+    if (!last_frame) return;
+    let repeat = false;
+    
+    const difference = Math.max(0, timestamp - last_frame);
+    if (dynamic.current.collapsed) {
+      if (dynamic.current.max_height > minHeight) {
+        dynamic.current.max_height = Math.max(minHeight, dynamic.current.max_height - (content_height / speed) * difference);
+        repeat = true;
+      }
+      if (dynamic.current.max_width > minWidth) {
+        dynamic.current.max_width = Math.max(minWidth, dynamic.current.max_width - (content_width / speed) * difference);
+        repeat = true;
+      }
+    }
+    else {
+      if (dynamic.current.max_height < content_height) {
+        dynamic.current.max_height = Math.min(content_height, dynamic.current.max_height + (content_height / speed) * difference);
+        repeat = true;
+      }
+      if (dynamic.current.max_width < content_width) {
+        dynamic.current.max_width = Math.min(content_width, dynamic.current.max_width + (content_width / speed) * difference);
+        repeat = true;
+      }
+    }
+    
+    if (repeat) {
+      setLastFrame(timestamp);
+    }
+  }
+  
+  function collapse(flag: boolean) {
+    dynamic.current.collapsed = flag;
+    
+    setLastFrame(performance.now());
+    onChange?.(flag);
+  }
+  
   function onComponentClick(event: React.MouseEvent<HTMLDivElement>) {
     onClick?.(event);
     if (event.defaultPrevented) return;
-    onChange?.(!internal_collapsed);
-    setInternalCollapsed(!internal_collapsed);
+    collapse(!dynamic.current.collapsed);
   }
-
-  function updateElementSize(element: Element) {
-    setMaxWidth(element.scrollWidth + element.clientLeft * 2);
-    setMaxHeight(element.scrollHeight + element.clientTop * 2);
+  
+  function onCollapsedChange() {
+    collapse(collapsed);
+  }
+  
+  function onRefContainerChange() {
+    if (!ref_container.current) return;
+    const observer = new ResizeObserver(onContainerResize);
+    observer.observe(ref_container.current, {box: "border-box"});
+    return () => observer.disconnect();
+  }
+  
+  function onContainerResize([{target}]: ResizeObserverEntry[]) {
+    setContentWidth(target.scrollWidth);
+    setContentHeight(target.scrollHeight);
+    if (!dynamic.current.collapsed) {
+      dynamic.current.max_width = target.scrollWidth;
+      dynamic.current.max_height = target.scrollHeight;
+    }
   }
 }
 
-interface CollapsibleStyleProps extends CSSProperties {
-  "--react-collapsible-internal-speed"?: `${number}ms`;
-  "--react-collapsible-internal-max-width"?: `${number}px`;
-  "--react-collapsible-internal-max-height"?: `${number}px`;
+interface DynamicVariables {
+  collapsed: boolean;
+  max_width: number;
+  max_height: number;
 }
 
 export interface CollapsibleProps extends Omit<HTMLAttributes<HTMLDivElement>, "style" | "onChange"> {
   collapsed?: boolean;
   direction?: CollapsibleDirection;
   label?: React.ReactNode;
-  style?: CollapsibleStyleProps;
   speed?: number;
   minWidth?: number;
   minHeight?: number;
-
+  
   onChange?(value: boolean): void;
 }
 
