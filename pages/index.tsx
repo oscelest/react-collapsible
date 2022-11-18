@@ -15,8 +15,8 @@ export default function IndexPage() {
       {/*  <span>Test 3</span>*/}
       {/*</Collapsible>*/}
       
-      <Collapsible id={"outer"} label={"Test"} direction={CollapsibleDirection.BOTH} minWidth={40}>
-        {list.map((number, index) => <div key={index}>Value: {number}</div>)}
+      <Collapsible id={"outer"} label={"Test 1234567890"} direction={CollapsibleDirection.WIDTH}>
+        {list.map((number, index) => <div key={index}>Value for this is the thing and very long thingy majik: {number}</div>)}
         <button onClick={() => setList(list.concat(Array(Math.ceil(Math.random() * 5)).fill(0)))}>Extend</button>
         <Collapsible id={"inner"} label={"Test"} direction={CollapsibleDirection.BOTH}>
           {list.map((number, index) => <div key={index}>Value: {number}</div>)}
