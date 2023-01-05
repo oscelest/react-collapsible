@@ -14,18 +14,15 @@ export default [
       {
         file:      "dist/cjs/index.js",
         format:    "cjs",
-        sourcemap: true,
       },
       {
         file:      "dist/esm/index.js",
         format:    "esm",
-        sourcemap: true,
       },
       {
         name:      Package.name.replace(/^@noxy\//, ""),
         file:      "dist/umd/index.js",
         format:    "umd",
-        sourcemap: true,
         globals:   {
           "react": "React",
         },
@@ -37,7 +34,7 @@ export default [
       CommonJS(),
       TypeScript({tsconfig: "./tsconfig.build.json"}),
       PostCSS(),
-      Terser(),
+      Terser({sourceMap: true}),
     ],
   },
   {
