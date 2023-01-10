@@ -1,1 +1,1 @@
-export {default as CollapsibleDirection} from "./CollapsibleDirection";
+export * from "./CollapsibleDirection";

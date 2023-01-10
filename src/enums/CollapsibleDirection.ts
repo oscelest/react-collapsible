@@ -1,7 +1,7 @@
-enum CollapsibleDirection {
-  WIDTH             = "width",
-  HEIGHT            = "height",
-  BOTH              = "both",
+export enum CollapsibleDirection {
+  WIDTH  = "width",
+  HEIGHT = "height",
+  BOTH   = "both",
 }
 
 export default CollapsibleDirection;
