@@ -1,14 +1,14 @@
 {
-  "name": "@noxy/react-collapsible",
-  "author": "oscelest",
-  "version": "0.6.5",
-  "description": "A simple collapsible react element.",
-  "license": "MIT",
-  "repository": {
+  "name":          "@noxy/react-collapsible",
+  "author":        "oscelest",
+  "version":       "0.7.0",
+  "description":   "A simple collapsible react element.",
+  "license":       "MIT",
+  "repository":    {
     "type": "git",
-    "url": "git@github.com:oscelest/react-collapsible.git"
+    "url":  "git@github.com:oscelest/react-collapsible.git"
   },
-  "bugs": {
+  "bugs":          {
     "url": "https://github.com/oscelest/react-collapsible/issues"
   },
   "publishConfig": {
