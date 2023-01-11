@@ -1,36 +1,18 @@
-:root .Component {
-  --icon: " ";
-}
-
 .Component:global(.collapsible) {
-  display:   flex;
-  flex:      0 0 auto;
-  flex-flow: column;
   border:    1px solid black;
   overflow:  hidden;
 }
 
 .Component :global(.collapsible-label) {
-  display:       flex;
-  flex:          1 1 auto;
   border-bottom: 1px solid black;
   cursor:        pointer;
   user-select:   none;
 }
 
 .Component :global(.collapsible-content) {
-  display:     flex;
-  flex:        0 0 auto;
-  flex-flow:   column;
   margin-top:  -1px;
-  white-space: nowrap;
-  word-break:  keep-all;
 }
 
 .Component :global(.collapsible-content-container) {
-  display:   flex;
-  flex:      0 0 auto;
-  flex-flow: column;
   min-width: max-content;
-  width:     100%;
 }

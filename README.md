@@ -22,23 +22,28 @@ The following is an example of how to use the component:
 
 ```typescript jsx
 import React, {HTMLProps, useState} from "react";
-import {ReactCollapsible} from "@noxy/react-collapsible";
+import {Collapsible} from "@noxy/react-collapsible";
 import CollapsibleDirection from "./CollapsibleDirection";
 
 function TestComponent(props: HTMLProps<HTMLDivElement>) {
   const [collapsed, setCollapsed] = useState<boolean>(true);
   
   return (
-    <ReactCollapsible collapsed={collapsed} direction={CollapsibleDirection.BOTH} label={"Hello World"} speed={300} minWidth={100} minHeight={100} onChange={setCollapsed}>
+    <Collapsible collapsed={collapsed} direction={CollapsibleDirection.BOTH} label={"Hello World"} speed={300} minWidth={100} minHeight={100} onChange={setCollapsed}>
       <div {...props}>
         Hello World
       </div>
-    </ReactCollapsible>
+    </Collapsible>
   );
 }
 ```
 
+The `Collapsible` component can be nested inside another `Collapsible` component and should work out of the box as long as mandatory [styling](#Styling) is maintained.
+
 ## Properties
+
+The `Collapsible` component inherits all HTMLDivElement properties and applies them directly to the outermost element.
+This includes the className property for those using CSS modules.
 
 ### collapsed: boolean
 
@@ -76,17 +81,36 @@ The speed which the collapsible will open and close with. The speed is a relativ
 
 The minimum width of the collapsible. It should be set here rather than through CSS as it would change the animation timing if manually adjusted through CSS.
 
+**Default value**: `0`
+
 ### minHeight: number
 
 The minimum height of the collapsible. It should be set here rather than through CSS as it would change the animation timing if manually adjusted through CSS.
+
+**Default value**: `0`
 
 ### onChange: callback(value: boolean): void
 
 A callback function which returns whether the collapsible should be collapsed or not. Triggered when a label is clicked on.
 
+If you want to avoid this callback, intercept the onClick event of the `.collapsible` or `.collapsible-label` element and call `event.preventDefault()`.
 
+**Default value**: `undefined`
 
+## Styling
 
+The following is a list of elements inside this component and which properties should not be changed under any circumstance.
 
+```css
+.collapsible {
+  overflow: hidden;
+}
 
+.collapsible-content-container {
+  min-width: max-content;
+}
+```
 
+## Notice
+
+This is currently not in a v1.0.0 release. Undocumented breaking changes might happen between versions.
