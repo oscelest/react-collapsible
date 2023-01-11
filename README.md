@@ -99,7 +99,8 @@ If you want to avoid this callback, intercept the onClick event of the `.collaps
 
 ## Styling
 
-The following is a list of elements inside this component and which properties should not be changed under any circumstance.
+The following is a list of elements and properties on said elements which should not be modified to avoid breaking the functionality of the component.
+Any other property is not mandatory, can be changed, and is only there for visual clarity when first using the component.
 
 ```css
 .collapsible {
