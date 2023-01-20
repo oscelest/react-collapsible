@@ -1,5 +1,5 @@
 import React, {CSSProperties, HTMLAttributes, ReactNode, useEffect, useRef, useState} from "react";
-import CollapsibleDirection from "../enums/CollapsibleDirection";
+import {CollapsibleDirection} from "../enums";
 import Style from "./Collapsible.module.css";
 
 export function Collapsible(props: CollapsibleProps) {
@@ -133,5 +133,3 @@ export interface CollapsibleProps extends Omit<HTMLAttributes<HTMLDivElement>, "
   
   onChange?(value: boolean): void;
 }
-
-export default Collapsible;

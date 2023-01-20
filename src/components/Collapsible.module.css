@@ -1,6 +1,6 @@
-.Component:global(.collapsible) {
-  border:    1px solid black;
-  overflow:  hidden;
+.Component {
+  border:   1px solid black;
+  overflow: hidden !important;
 }
 
 .Component :global(.collapsible-label) {
@@ -10,9 +10,9 @@
 }
 
 .Component :global(.collapsible-content) {
-  margin-top:  -1px;
+  margin-top: -1px;
 }
 
 .Component :global(.collapsible-content-container) {
-  min-width: max-content;
+  min-width: max-content !important;
 }
