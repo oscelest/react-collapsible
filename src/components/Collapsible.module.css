@@ -1,6 +1,6 @@
 .Component {
-  border:   1px solid black;
   overflow: hidden !important;
+  border:   1px solid black;
 }
 
 .Component :global(.collapsible-label) {
